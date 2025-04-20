@@ -24,10 +24,16 @@ import javafx.stage.Stage;
 
 import javafx.scene.control.Label;
 import jdk.swing.interop.SwingInterOpUtils;
+import org.w3c.dom.ls.LSInput;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+
+//networking imports
+import java.io.*;
+import java.net.*;
+
 
 public class NetworkingTest_01 extends Application {
     @Override
@@ -35,6 +41,8 @@ public class NetworkingTest_01 extends Application {
 
         stage.setTitle("IoT Game - Networking Test");
         //stage.setScene(scene);
+
+
 
 
         //  #f69b9b  light red
@@ -158,10 +166,25 @@ public class NetworkingTest_01 extends Application {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 
     public static void main(String[] args) {
         launch();
+
+
     }
 }
 
