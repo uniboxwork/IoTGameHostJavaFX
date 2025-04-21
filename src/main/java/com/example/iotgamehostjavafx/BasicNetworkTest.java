@@ -6,13 +6,17 @@ import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class BasicNetworkTest {
 
 
 
+
+
         public static void main(String args[]) {
+
 
 
             ServerSocket serverSocket;
@@ -21,7 +25,7 @@ public class BasicNetworkTest {
             //networking
             //-----------
 
-            /*
+
             //-------
             //receive
             //-------
@@ -43,6 +47,7 @@ public class BasicNetworkTest {
                     System.out.println("Starting listening...");
                     Socket socket = serverSocket.accept();  //will halt waiting for connection?
                     InputStreamReader iR = new InputStreamReader(socket.getInputStream());
+                    //BufferedReader bR = new BufferedReader(iR);
                     BufferedReader bR = new BufferedReader(iR);
 
                     String message = bR.readLine();
@@ -61,40 +66,50 @@ public class BasicNetworkTest {
                 System.out.println("Couldn't open port for listening");
 
             }
-            */
+
 
 
 
             //-----
             //send
             //-----
-
+            /*
             try {
-                Socket socket = new Socket("192.168.1.27", 50000);
+                //Socket socket = new Socket("192.168.1.27", 50000); //game piece
 
-                PrintStream pS = new PrintStream(socket.getOutputStream());
+                //PrintStream pS = new PrintStream(socket.getOutputStream());
                 //pS.println("Java - Hello!");
 
                 boolean finished = false;
-                Scanner myInput = new Scanner(System.in);
+                Scanner myInput = new Scanner(System.in);   //utility for reading keyboard input
 
                 while(!finished) {
-                    System.out.println("Enter a message: ");
 
+
+                    Socket socket = new Socket("192.168.1.27", 50000); //create socket connection to game piece
+                    PrintStream pS = new PrintStream(socket.getOutputStream());  //create print stream for writing to game piece
+
+
+
+
+                    System.out.println("Enter a message: ");
                     String myMessage = myInput.next();      //read keyboard input
 
-                    if(myMessage.equals("exit")) {
-                        finished = true;
+                    if(myMessage.equals("exit")) {          //message is exit
+                        finished = true;                    //quit loop
                     }
-                    pS.print(myMessage);                  //send message
+
+                    pS.print(myMessage);                    //send message
+
+                    socket.close();                         //close socket connection
 
                 }//end while
 
-                myInput.close();
+                myInput.close();       //close keyboard input connection
 
 
 
-                socket.close();
+                //socket.close();         //close socket connection
 
 
             }catch (IOException e) {
@@ -103,7 +118,7 @@ public class BasicNetworkTest {
             }
 
 
-
+            */
 
 
 
