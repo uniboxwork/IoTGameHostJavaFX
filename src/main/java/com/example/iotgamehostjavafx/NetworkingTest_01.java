@@ -4,7 +4,7 @@ package com.example.iotgamehostjavafx;
    =========================================
    Class for testing network communication
    =========================================
-   Contains JavaFX GUI with inbox and outbox textareas and send button
+   Contains JavaFX GUI with inbox and outbox textareas and send message button
 
  */
 
@@ -36,17 +36,23 @@ import java.net.*;
 
 
 public class NetworkingTest_01 extends Application {
+
+
+
+    //============================================================
+    //start() called by JavaFX on startup, passes in Stage object
+    //============================================================
     @Override
     public void start(Stage stage) throws IOException {
 
-        stage.setTitle("IoT Game - Networking Test");
-        //stage.setScene(scene);
 
 
 
 
+
+        //Styling Notes
+        //-------------
         //  #f69b9b  light red
-
 //        myTextArea.setPrefColumnCount(50);
 
 //        //button styling
@@ -56,9 +62,20 @@ public class NetworkingTest_01 extends Application {
 //
 //        );
 
+
+
+
+
+
+        //======
         //inbox
+        //======
+
+        //label
         Label inLabel = new Label("IN");
         inLabel.setStyle("-fx-font-size: 24pt");
+
+        //textarea
         TextArea inTextArea = new TextArea("Received...");
         //inTextArea.setStyle("-fx-background-color: #f69b9b;"); //light red
 
@@ -66,20 +83,21 @@ public class NetworkingTest_01 extends Application {
         //WORKS:
         //FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile()); //the dots '.' in the package name are converted into slashes
 
-
+        //container inBox
         VBox inBox;
 
+        //read image file
         try {
-            FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile()); //the dots '.' in the package name are converted into slashes
+            FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile()); //note: the dots '.' in the package name are converted into slashes
             Image myImage = new Image(input);
             ImageView myImageView = new ImageView(myImage);
 
-            //image resource was found. Add image to inBox VBox...
+            //image resource was found. Add image to inBox VBox container...
             inBox = new VBox(inLabel, inTextArea, myImageView); //add image in inbox
 
         }catch(NullPointerException n) {
 
-            //image resource was NOT found. Don't add to inBox VBox...
+            //image resource was NOT found. Don't add to inBox VBox container...
             inBox = new VBox(inLabel, inTextArea);
 
         }
@@ -92,14 +110,20 @@ public class NetworkingTest_01 extends Application {
 
 
 
-
+        //=======
         //outbox
+        //=======
+
+        //label
         Label outLabel = new Label("OUT");
         outLabel.setStyle("-fx-font-size: 24pt");
+
+        //text area
         TextArea outTextArea = new TextArea("to send...");
+
+        //send button
         Button sendButton = new Button("Send");
         sendButton.setStyle("-fx-font-size: 24pt");
-
         sendButton.setOnAction(actionEvent -> {
 
 
@@ -108,27 +132,30 @@ public class NetworkingTest_01 extends Application {
 
         });
 
-
-
-
-
-
-
-
-
-
+        //container outBox
         VBox outBox = new VBox(outLabel, outTextArea, sendButton);
 
 
+        //====================
+        //container both boxes
+        //====================
         HBox middleBox = new HBox(inBox, outBox);
 
 
         //Debug print image file path:
         //outTextArea.setText(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile());
 
-        Scene myScene = new Scene(middleBox); //returns to this size, when fullscreen exit
-        //myScene.add(button);
 
+        //======
+        //scene
+        //======
+        Scene myScene = new Scene(middleBox); //returns to this size, when fullscreen exit
+
+        //=======
+        //stage
+        //=======
+        //note: stage object is created and passed into this start() method by JavaFX
+        stage.setTitle("IoT Game - Networking Test");
         stage.setScene(myScene);
         stage.setWidth(600);
         stage.setHeight(400);
@@ -136,7 +163,11 @@ public class NetworkingTest_01 extends Application {
         stage.show();
 
 
+
+        //=============================
         //listen to keyboard clicks...
+        //=============================
+        //Note: input seems to be captured by the TextAreas and not bubbled up - nothing is printed to the console since TextAreas added
         stage.addEventHandler(KeyEvent.KEY_PRESSED, (event) -> {
 
             System.out.println("Key pressed: " + event.getCode());
@@ -145,7 +176,10 @@ public class NetworkingTest_01 extends Application {
         });
 
 
+
+        //=========================
         //close window 'X' clicked
+        //=========================
         stage.setOnCloseRequest((event) -> {
 
             System.out.println("Closing Stage");
@@ -155,9 +189,9 @@ public class NetworkingTest_01 extends Application {
 
 
 
-
-
-        //set scene mouse cursor icon
+        //=============
+        //mouse cursor
+        //=============
         myScene.setCursor(Cursor.OPEN_HAND);
         //myScene.setCursor(Cursor.CROSSHAIR);
 
@@ -179,14 +213,19 @@ public class NetworkingTest_01 extends Application {
 
 
 
-    }
+    }//end start()
+
+
 
     public static void main(String[] args) {
         launch();
 
 
-    }
-}
+    }//end main()
+
+
+
+}//end NetworkingTest_01 class
 
 
 
