@@ -159,21 +159,13 @@ public class ThreadTest_02 {
 
 
 
+            }//end run()
+
+
+        }); //end myThread2
 
 
 
-
-
-
-
-
-
-
-
-            }
-
-
-        });
 
 
         myThread1.start();
