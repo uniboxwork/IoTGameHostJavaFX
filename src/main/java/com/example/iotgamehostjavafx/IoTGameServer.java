@@ -8,10 +8,12 @@ package com.example.iotgamehostjavafx;
 
  */
 
+import javafx.animation.PathTransition;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -19,10 +21,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -70,6 +77,108 @@ public class IoTGameServer extends Application {
 
 
 
+        //================
+        //board display
+        //================
+        Pane myPane = new Pane();
+        //Canvas myCanvas = new Canvas(200,200);
+        //myPane.getChildren().add(myCanvas);
+
+        Image gameboardImage;
+        ImageView gameboardView;
+
+        Image testImage;
+        ImageView testImageView;
+
+
+        //read image file
+        try {
+
+            FileInputStream backgroundInput = new FileInputStream(NetworkingTest_01.class.getResource("/images/game_board_for_screen_01_600x425.png").getFile()); //note: the dots '.' in the package name are converted into slashes
+            gameboardImage = new Image(backgroundInput);
+            gameboardView = new ImageView(gameboardImage);
+
+            myPane.getChildren().add(gameboardView);
+
+            //FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile()); //note: the dots '.' in the package name are converted into slashes
+            FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/man_02_cartoon.png").getFile()); //note: the dots '.' in the package name are converted into slashes
+            testImage = new Image(input);
+            testImageView = new ImageView(testImage);
+
+            myPane.getChildren().add(testImageView);
+
+
+
+
+
+
+
+            Path myPath = new Path();
+            myPath.getElements().add(new MoveTo(300,300));
+            myPath.getElements().add(new LineTo(88,493));
+
+            PathTransition myPt = new PathTransition();
+            myPt.setDuration(Duration.millis(8000));
+            myPt.setPath(myPath);
+            //myPt.setDelay(Duration.millis(delay));
+
+            //myPt.setNode(myIV);
+            myPt.setNode(testImageView);
+            myPt.play();
+
+
+
+
+
+            //image resource was found. Add image to inBox VBox container...
+            //inBox = new VBox(inLabel, inTextArea, myImageView); //add image in inbox
+
+        }catch(NullPointerException n) {
+
+            //image resource was NOT found. Don't add to inBox VBox container...
+            //inBox = new VBox(inLabel, inTextArea);
+
+        }
+
+
+        //Path myPath = new Path();
+        //myPath.getElements().add(new MoveTo(antiviro_x,antiviro_y));
+        //myPath.getElements().add(new LineTo(antiviro_x -= 50,antiviro_y -= 50));
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         //======
@@ -82,6 +191,7 @@ public class IoTGameServer extends Application {
 
         //textarea
         TextArea inTextArea = new TextArea("Received...");
+        inTextArea.setPrefRowCount(4);
         inTextArea.setWrapText(true);
         //inTextArea.setStyle("-fx-background-color: #f69b9b;"); //light red
 
@@ -126,10 +236,11 @@ public class IoTGameServer extends Application {
 
         //text area
         TextArea outTextArea = new TextArea("to send...");
+        outTextArea.setPrefRowCount(4);
 
         //send button
         Button sendButton = new Button("Send");
-        sendButton.setStyle("-fx-font-size: 24pt");
+        sendButton.setStyle("-fx-font-size: 12pt");
         sendButton.setOnAction(actionEvent -> {
 
 
@@ -328,7 +439,7 @@ public class IoTGameServer extends Application {
 
 
 
-        VBox mainBox = new VBox(middleBox, dataInOutBoxes);
+        VBox mainBox = new VBox(myPane, middleBox, dataInOutBoxes);
 
         mainBox.setAlignment(Pos.CENTER_LEFT);
 
