@@ -381,7 +381,7 @@ public class IoTGameServer extends Application {
         //pieceOutRow4.setAlignment(Pos.CENTER_RIGHT);
         //pieceOutRow5.setAlignment(Pos.CENTER_RIGHT);
 
-
+//
 
         //send button for fields values
         Button sendButtonFields = new Button("Send");
