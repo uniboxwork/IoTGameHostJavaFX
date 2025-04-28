@@ -2,9 +2,13 @@ package com.example.iotgamehostjavafx;
 
 /*
    =========================================
-   Class for testing network communication
+   IoTGameServer
+   -------------
+   Class for hosting connection from IoT Game piece for testing
+   by: J.Grace
+   Student ID: 2286
    =========================================
-   Contains JavaFX GUI with inbox and outbox textareas and send message button
+   Contains JavaFX GUI with game board display, network message inbox/outbox' textareas and send message button
 
  */
 
@@ -37,6 +41,7 @@ import java.io.IOException;
 //networking imports
 import java.io.*;
 import java.net.*;
+import java.util.HashMap;
 
 
 public class IoTGameServer extends Application {
@@ -47,8 +52,12 @@ public class IoTGameServer extends Application {
     String deviceID = "hst";         //id of this device - host
     String separator = "#";         //separator for fields in network message
 
-
-
+    //============================
+    //GamePiece Icon variables...
+    //============================
+    Image testImage;
+    ImageView testImageView;
+    int iconPreviousPosition = 1;
 
 
 
@@ -77,6 +86,10 @@ public class IoTGameServer extends Application {
 
 
 
+
+
+
+
         //================
         //board display
         //================
@@ -87,8 +100,8 @@ public class IoTGameServer extends Application {
         Image gameboardImage;
         ImageView gameboardView;
 
-        Image testImage;
-        ImageView testImageView;
+        //Image testImage;
+        //ImageView testImageView;
 
 
         //read image file
@@ -100,6 +113,9 @@ public class IoTGameServer extends Application {
 
             myPane.getChildren().add(gameboardView);
 
+            //============================
+            //Game Piece Icon loading...
+            //============================
             //FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile()); //note: the dots '.' in the package name are converted into slashes
             FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/man_02_cartoon.png").getFile()); //note: the dots '.' in the package name are converted into slashes
             testImage = new Image(input);
@@ -187,7 +203,7 @@ public class IoTGameServer extends Application {
 
         //label
         Label inLabel = new Label("IN");
-        inLabel.setStyle("-fx-font-size: 24pt");
+        inLabel.setStyle("-fx-font-size: 16pt");
 
         //textarea
         TextArea inTextArea = new TextArea("Received...");
@@ -232,7 +248,7 @@ public class IoTGameServer extends Application {
 
         //label
         Label outLabel = new Label("OUT");
-        outLabel.setStyle("-fx-font-size: 24pt");
+        outLabel.setStyle("-fx-font-size: 16pt");
 
         //text area
         TextArea outTextArea = new TextArea("to send...");
@@ -317,7 +333,7 @@ public class IoTGameServer extends Application {
         );
 
         piece1DataInBox.setStyle("-fx-font-weight: bold;"+
-                "-fx-font-size:14pt;"
+                "-fx-font-size:12pt;"
         );
 
 
@@ -369,7 +385,7 @@ public class IoTGameServer extends Application {
 
         //send button for fields values
         Button sendButtonFields = new Button("Send");
-        sendButtonFields.setStyle("-fx-font-size: 24pt");
+        sendButtonFields.setStyle("-fx-font-size: 12pt");
         sendButtonFields.setOnAction(actionEvent -> {
 
 
@@ -397,7 +413,7 @@ public class IoTGameServer extends Application {
                 sendButtonFields);
 
         piece1DataOutBox.setStyle("-fx-font-weight: bold;"+
-                "-fx-font-size:14pt;"
+                "-fx-font-size:12pt;"
         );
 
 
@@ -551,12 +567,36 @@ public class IoTGameServer extends Application {
                         inTextArea.setText(inTextArea.getText() + message + "\n");  //add to out textarea
                         inTextArea.setScrollTop(Double.MAX_VALUE);  //keep scrolled to bottom of list
 
+
+                        /*
+                        //movement icon test
+                        Path myPath = new Path();
+                        myPath.getElements().add(new MoveTo(300,300));
+                        myPath.getElements().add(new LineTo(0,0));
+
+                        PathTransition myPt = new PathTransition();
+                        myPt.setDuration(Duration.millis(5000));
+                        myPt.setPath(myPath);
+                        //myPt.setDelay(Duration.millis(delay));
+
+                        //myPt.setNode(myIV);
+                        myPt.setNode(testImageView);
+                        myPt.play();
+                        */
+
+
+                        movePieceIcon(1);
+
+
+
                         //split message into fields
                         if(message != null) {
                             String[] messageFields = message.split("#");
                             display_pieceIDIn.setText(messageFields[0]);
                             display_subjectIn.setText(messageFields[1]);
                             display_valueIn.setText(messageFields[2]);
+
+                            movePieceIcon(translateRFID(messageFields[2]));
                         }
 
 
@@ -819,8 +859,108 @@ public class IoTGameServer extends Application {
 
 
 
+    /*
+      ======================
+       translateRFID()
+      ======================
+      takes the string serial number of an RFID tag and returns a game board square number
+    */
+    public int translateRFID(String serialNum) {
+
+        HashMap <String, Integer> tagMappings = new HashMap<>();
+
+        //inelegant way of doing this, but ran out of time.
+
+        //rfid's were read into textbox of JavaFX. Pasted into notepad. Find and replace
+        //used to add HashMap code around surroundings.
+
+        tagMappings.put("584604745789",1);
+        tagMappings.put("584604680242",2);
+        tagMappings.put("584604614707",3);
+        tagMappings.put("584604483633",4);
+        tagMappings.put("584615428318",5);
+        tagMappings.put("584615362783",6);
+        tagMappings.put("584606887152",7);
+        tagMappings.put("584615166162",8);
+        tagMappings.put("584615231709",9);
+        tagMappings.put("584615558951",10);
+        tagMappings.put("584615821115",11);
+        tagMappings.put("584615624484",12);
+        tagMappings.put("584615690021",13);
+        tagMappings.put("584615755578",14);
+        tagMappings.put("584604155914",15);
+        tagMappings.put("584604221493",16);
+        tagMappings.put("584604287028",17);
+        tagMappings.put("584604352567",18);
+        tagMappings.put("584604418102",19);
+        tagMappings.put("584604549168",20);
+
+        Integer result = tagMappings.get(serialNum);
+
+        //if not a recognised serial number, return square as 1 NOTE: need to check that this conversion from Integer to int is working correctly
+        if(result == null) {
+            result = 1;
+        }
+
+        return result;
+    }
 
 
+
+/*
+========================
+ movePieceIcon()
+========================
+moves icon representation of game piece on the game board
+ */
+public void movePieceIcon(int squareNumber) {
+
+
+        //game board screen pixel locations of squares no. 1 - 20  (0 is not used/ignored)
+        int[][] squareLocation = { {0,0},
+                {533,373},//1
+                {452,370},//2
+                {376,370},//3
+                {300,370},//4
+                {224,370},//5
+                {148,370},//6
+                {68,370},//7
+                {65,288},//8
+                {64,211},//9
+                {64,131},//10
+                {67,51},//11
+                {147,55},//12
+                {225,55},//13
+                {300,55},//14
+                {376,55},//15
+                {452,55},//16
+                {533,50},//17
+                {535,131},//18
+                {535,210},//19
+                {535,289},//20
+        };
+
+
+    //movement test
+    Path myPath = new Path();
+    //myPath.getElements().add(new MoveTo(300,300));
+    myPath.getElements().add(new MoveTo(squareLocation[iconPreviousPosition][0],squareLocation[iconPreviousPosition][1]));
+    //myPath.getElements().add(new LineTo(0,0));
+    myPath.getElements().add(new LineTo(squareLocation[squareNumber][0],squareLocation[squareNumber][1]));
+
+    PathTransition myPt = new PathTransition();
+    myPt.setDuration(Duration.millis(500));
+    myPt.setPath(myPath);
+    //myPt.setDelay(Duration.millis(delay));
+
+    //myPt.setNode(myIV);
+    myPt.setNode(testImageView);
+    myPt.play();
+
+    iconPreviousPosition = squareNumber; //set icons previous location to now point to this square (for drawing a motion line from next time)
+
+
+}//end movePieceIcon()
 
 
 
