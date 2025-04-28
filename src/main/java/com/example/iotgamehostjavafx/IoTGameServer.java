@@ -127,7 +127,7 @@ public class IoTGameServer extends Application {
 
 
 
-
+            /*
 
             Path myPath = new Path();
             myPath.getElements().add(new MoveTo(300,300));
@@ -141,7 +141,7 @@ public class IoTGameServer extends Application {
             //myPt.setNode(myIV);
             myPt.setNode(testImageView);
             myPt.play();
-
+            */
 
 
 
@@ -351,7 +351,7 @@ public class IoTGameServer extends Application {
         //piece 1 data-out fields display
         //===============================
         //labels
-        Label label_pieceDataOut = new Label("======= Game Host Data Out =======");
+        Label label_pieceDataOut = new Label("==================== Game Host Data Out =======");
         Label label_pieceIDOut = new Label("PieceID: ");
         Label label_subjectOut = new Label("Subject: ");
         Label label_valueOut= new Label("Value: ");
@@ -585,7 +585,7 @@ public class IoTGameServer extends Application {
                         */
 
 
-                        movePieceIcon(1);
+                        //movePieceIcon(1);
 
 
 
@@ -949,7 +949,7 @@ public void movePieceIcon(int squareNumber) {
     myPath.getElements().add(new LineTo(squareLocation[squareNumber][0],squareLocation[squareNumber][1]));
 
     PathTransition myPt = new PathTransition();
-    myPt.setDuration(Duration.millis(500));
+    myPt.setDuration(Duration.millis(250));
     myPt.setPath(myPath);
     //myPt.setDelay(Duration.millis(delay));
 
