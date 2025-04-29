@@ -55,7 +55,7 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
 
         //network control
         NetInController controller = new NetInController();
-        controller.setIn(new NetInWIFI());                      //the WIFI adapter
+        controller.setInAdapter(new NetInWIFI());                      //the WIFI adapter
         controller.getIn().setDispatch(dispatcher);             //set the WIFI adapter dispatcher (place to send received messages)
 
         GameLogic myGameLogic = new GameLogic();                //create logic
@@ -66,7 +66,7 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
 
 
 
-        controller.start(); //start reading network messages
+        controller.start(); //start network controller reading network messages
 
 
         //practice messages

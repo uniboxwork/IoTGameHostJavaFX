@@ -8,7 +8,7 @@ public class NetInController {
 
 
     //attach NetIn object for controlling (starting/stopping, getting messages passed in from)
-    public void setIn(NetIn netIn) {
+    public void setInAdapter(NetIn netIn) {
         this.netIn = netIn;
 
 
@@ -71,7 +71,7 @@ public class NetInController {
         NetInWIFI netIn = new NetInWIFI();
 
         NetInController myController = new NetInController();
-        myController.setIn(netIn);
+        myController.setInAdapter(netIn);
 
         myController.start();
 
