@@ -4,20 +4,20 @@ package com.example.iotgamehostjavafx;
    =========================================
    IoTGameServer
    -------------
-   Class for hosting connection from IoT Game piece for testing
+   Class for hosting connection from IoT Game piece
    by: J.Grace
-   Student ID: 2286
+   Student ID: 22863531
    =========================================
-   Contains JavaFX GUI with game board display, network message inbox/outbox' textareas and send message button
+   Contains JavaFX GUI with game board display, network message inbox/outbox' areas and send message button
 
  */
 
 import javafx.animation.PathTransition;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -50,13 +50,13 @@ public class IoTGameServer extends Application {
 
     //Variables
     String deviceID = "hst";         //id of this device - host
-    String separator = "#";         //separator for fields in network message
+    String separator = "#";         //separator for fields in network messages
 
     //============================
     //GamePiece Icon variables...
     //============================
-    Image testImage;
-    ImageView testImageView;
+    Image gamePieceImage;
+    ImageView gamePieceImageView;
     int iconPreviousPosition = 1;
 
 
@@ -70,18 +70,6 @@ public class IoTGameServer extends Application {
 
 
 
-        //Styling Notes
-        //-------------
-        //  #f69b9b  light red
-//        myTextArea.setPrefColumnCount(50);
-
-//        //button styling
-//        button1.setStyle("-fx-font-size:24pt;" +
-//                "-fx-background-color: #b23a3a;" +
-//                "-fx-text-fill: #720505;"+
-        //        "-fx-font-weight: bold"
-//
-//        );
 
 
 
@@ -93,55 +81,50 @@ public class IoTGameServer extends Application {
         //================
         //board display
         //================
-        Pane myPane = new Pane();
-        //Canvas myCanvas = new Canvas(200,200);
-        //myPane.getChildren().add(myCanvas);
+        Pane gameBoardPane = new Pane();       //pane has less layout control, allows children to move/animate
 
         Image gameboardImage;
         ImageView gameboardView;
 
-        //Image testImage;
-        //ImageView testImageView;
+
 
 
         //read image file
         try {
 
+            //game board background image
             FileInputStream backgroundInput = new FileInputStream(NetworkingTest_01.class.getResource("/images/game_board_for_screen_01_600x425.png").getFile()); //note: the dots '.' in the package name are converted into slashes
             gameboardImage = new Image(backgroundInput);
             gameboardView = new ImageView(gameboardImage);
 
-            myPane.getChildren().add(gameboardView);
+            gameBoardPane.getChildren().add(gameboardView);
 
             //============================
             //Game Piece Icon loading...
             //============================
             //FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/face_laugh_01.png").getFile()); //note: the dots '.' in the package name are converted into slashes
-            FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/man_02_cartoon.png").getFile()); //note: the dots '.' in the package name are converted into slashes
-            testImage = new Image(input);
-            testImageView = new ImageView(testImage);
+            //FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/man_02_cartoon.png").getFile()); //note: the dots '.' in the package name are converted into slashes
+            FileInputStream input = new FileInputStream(NetworkingTest_01.class.getResource("/images/man_01.png").getFile()); //note: the dots '.' in the package name are converted into slashes
+            gamePieceImage = new Image(input);               //read image from disc
+            gamePieceImageView = new ImageView(gamePieceImage);   //create display view of image
 
-            myPane.getChildren().add(testImageView);
-
-
-
+            gameBoardPane.getChildren().add(gamePieceImageView);    //attach icon to pane
 
 
-            /*
 
             Path myPath = new Path();
-            myPath.getElements().add(new MoveTo(300,300));
-            myPath.getElements().add(new LineTo(88,493));
+            myPath.getElements().add(new MoveTo(0,0));
+            myPath.getElements().add(new LineTo(300,200));
 
             PathTransition myPt = new PathTransition();
-            myPt.setDuration(Duration.millis(8000));
+            myPt.setDuration(Duration.millis(400));
             myPt.setPath(myPath);
             //myPt.setDelay(Duration.millis(delay));
 
             //myPt.setNode(myIV);
-            myPt.setNode(testImageView);
+            myPt.setNode(gamePieceImageView);
             myPt.play();
-            */
+
 
 
 
@@ -252,7 +235,7 @@ public class IoTGameServer extends Application {
 
         //text area
         TextArea outTextArea = new TextArea("to send...");
-        outTextArea.setPrefRowCount(4);
+        outTextArea.setPrefRowCount(4);                         //number of rows to display
 
         //send button
         Button sendButton = new Button("Send");
@@ -351,7 +334,7 @@ public class IoTGameServer extends Application {
         //piece 1 data-out fields display
         //===============================
         //labels
-        Label label_pieceDataOut = new Label("==================== Game Host Data Out =======");
+        Label label_pieceDataOut = new Label("                        ======= Game Host Data Out =======");
         Label label_pieceIDOut = new Label("PieceID: ");
         Label label_subjectOut = new Label("Subject: ");
         Label label_valueOut= new Label("Value: ");
@@ -360,28 +343,10 @@ public class IoTGameServer extends Application {
 
         //text fields
         TextField display_pieceIDOut = new TextField("hst");
-        TextField display_subjectOut = new TextField("");
-        TextField display_valueOut = new TextField("");
+        TextField display_subjectOut = new TextField("cmd");
+        TextField display_valueOut = new TextField("exit");
         //TextField display_pieceLocationOut = new TextField("");
         //TextField display_timeRemainingOut = new TextField("");
-
-        //text field rows
-        HBox pieceOutRow0 = new HBox(label_pieceDataOut);
-        HBox pieceOutRow1 = new HBox(label_pieceIDOut, display_pieceIDOut);
-        HBox pieceOutRow2 = new HBox(label_subjectOut, display_subjectOut);
-        HBox pieceOutRow3 = new HBox(label_valueOut, display_valueOut);
-        //HBox pieceOutRow4 = new HBox(label_pieceLocationOut, display_pieceLocationOut);
-        //HBox pieceOutRow5 = new HBox(label_timeRemainingOut, display_timeRemainingOut);
-
-        //text field alignment
-        pieceOutRow0.setAlignment(Pos.CENTER_RIGHT);
-        pieceOutRow1.setAlignment(Pos.CENTER_RIGHT);
-        pieceOutRow2.setAlignment(Pos.CENTER_RIGHT);
-        pieceOutRow3.setAlignment(Pos.CENTER_RIGHT);
-        //pieceOutRow4.setAlignment(Pos.CENTER_RIGHT);
-        //pieceOutRow5.setAlignment(Pos.CENTER_RIGHT);
-
-//
 
         //send button for fields values
         Button sendButtonFields = new Button("Send");
@@ -398,6 +363,50 @@ public class IoTGameServer extends Application {
 
 
 
+        //text field rows
+        HBox pieceOutRow0 = new HBox(label_pieceDataOut);
+        HBox pieceOutRow1 = new HBox(label_pieceIDOut, display_pieceIDOut);
+        HBox pieceOutRow2 = new HBox(label_subjectOut, display_subjectOut);
+        HBox pieceOutRow3 = new HBox(label_valueOut, display_valueOut);
+        //button row
+        HBox pieceOutRow4 = new HBox(sendButtonFields);
+
+        //HBox pieceOutRow4 = new HBox(label_pieceLocationOut, display_pieceLocationOut);
+        //HBox pieceOutRow5 = new HBox(label_timeRemainingOut, display_timeRemainingOut);
+
+
+
+
+
+
+
+        //text field alignment
+        pieceOutRow0.setAlignment(Pos.CENTER_RIGHT);
+        pieceOutRow1.setAlignment(Pos.CENTER_RIGHT);
+        pieceOutRow2.setAlignment(Pos.CENTER_RIGHT);
+        pieceOutRow3.setAlignment(Pos.CENTER_RIGHT);
+        pieceOutRow4.setAlignment(Pos.CENTER_RIGHT);
+
+        //pieceOutRow4.setAlignment(Pos.CENTER_RIGHT);
+        //pieceOutRow5.setAlignment(Pos.CENTER_RIGHT);
+
+//
+         /*
+        //send button for fields values
+        Button sendButtonFields = new Button("Send");
+        sendButtonFields.setStyle("-fx-font-size: 12pt");
+        sendButtonFields.setOnAction(actionEvent -> {
+
+
+            //inTextArea.setText("SEND BUTTON PRESSED");
+            //sendMessage("BUTTON PRESSED");
+            sendMessage(display_subjectOut.getText(), display_valueOut.getText());
+
+
+        });
+        */
+
+
 
 
 
@@ -410,7 +419,8 @@ public class IoTGameServer extends Application {
                 pieceOutRow3,
                 //pieceOutRow4,
                 //pieceOutRow5,
-                sendButtonFields);
+                pieceOutRow4);
+                //sendButtonFields);
 
         piece1DataOutBox.setStyle("-fx-font-weight: bold;"+
                 "-fx-font-size:12pt;"
@@ -455,7 +465,7 @@ public class IoTGameServer extends Application {
 
 
 
-        VBox mainBox = new VBox(myPane, middleBox, dataInOutBoxes);
+        VBox mainBox = new VBox(gameBoardPane, middleBox, dataInOutBoxes);
 
         mainBox.setAlignment(Pos.CENTER_LEFT);
 
@@ -476,7 +486,7 @@ public class IoTGameServer extends Application {
         stage.setTitle("IoT Game Server");
         stage.setScene(myScene);
         //stage.setWidth(600);stage.setHeight(400);
-        //stage.setFullScreen(true); //makes full screen
+        stage.setFullScreen(true); //makes full screen
         stage.show();
 
 
@@ -509,7 +519,7 @@ public class IoTGameServer extends Application {
         //=============
         //mouse cursor
         //=============
-        myScene.setCursor(Cursor.OPEN_HAND);
+        myScene.setCursor(Cursor.OPEN_HAND);  //hand more appropriate for game?
         //myScene.setCursor(Cursor.CROSSHAIR);
 
 
@@ -564,8 +574,20 @@ public class IoTGameServer extends Application {
                         System.out.println("Message: " + message);
                         //inTextArea.setText(message);
 
-                        inTextArea.setText(inTextArea.getText() + message + "\n");  //add to out textarea
-                        inTextArea.setScrollTop(Double.MAX_VALUE);  //keep scrolled to bottom of list
+
+
+                        //Safely gets elements in the JavaFX thread to change
+                        Platform.runLater( () -> {
+
+                            inTextArea.setText(inTextArea.getText() + message + "\n");  //add to out textarea
+                            inTextArea.setScrollTop(Double.MAX_VALUE);  //keep scrolled to bottom of list
+
+
+
+                        });
+
+                        //inTextArea.setText(inTextArea.getText() + message + "\n");  //add to out textarea
+                        //inTextArea.setScrollTop(Double.MAX_VALUE);  //keep scrolled to bottom of list
 
 
                         /*
@@ -595,6 +617,12 @@ public class IoTGameServer extends Application {
                             display_pieceIDIn.setText(messageFields[0]);
                             display_subjectIn.setText(messageFields[1]);
                             display_valueIn.setText(messageFields[2]);
+
+
+
+                            IoTGameMessage myMessage = new IoTGameMessage(message);
+                            myMessage.print();
+
 
                             movePieceIcon(translateRFID(messageFields[2]));
                         }
@@ -863,7 +891,7 @@ public class IoTGameServer extends Application {
       ======================
        translateRFID()
       ======================
-      takes the string serial number of an RFID tag and returns a game board square number
+      translates the string serial number of an RFID tag to a game board square number
     */
     public int translateRFID(String serialNum) {
 
@@ -954,7 +982,7 @@ public void movePieceIcon(int squareNumber) {
     //myPt.setDelay(Duration.millis(delay));
 
     //myPt.setNode(myIV);
-    myPt.setNode(testImageView);
+    myPt.setNode(gamePieceImageView);
     myPt.play();
 
     iconPreviousPosition = squareNumber; //set icons previous location to now point to this square (for drawing a motion line from next time)
