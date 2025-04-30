@@ -13,7 +13,7 @@ public class GameBoard {
     //---------
     ArrayList<GameSquare> squares;          //holder for game squares
     private Translator translator;          //abstract translator object for translating serial numbers to square positions. Could be RFIDTranslator or BarcodeTranslator or other
-
+    private ScreenLocator screenLocator;    //object for mapping screen locations to board squares
 
     //============
     //constructor
@@ -23,13 +23,10 @@ public class GameBoard {
 
         this.squares = new ArrayList<>(); //initialise ArrayList
 
-        create(numberOfSquares);
-
-        //loop for all squares
+        create(numberOfSquares);  //create the squares
 
 
-
-    }
+    }//end constructor
 
 
 
@@ -58,9 +55,41 @@ public class GameBoard {
     }//end create()
 
 
+    //================
+    // setTranslator()
+    //================
     public void setTranslator(Translator translator) {
         this.translator = translator;
     }
+
+    //==================
+    // getTranslator()
+    //==================
+    public Translator getTranslator() {
+        return this.translator;
+
+    }
+
+
+    //=====================
+    // setScreenLocator()
+    //=====================
+    public void setScreenLocator(ScreenLocator locator) {
+        this.screenLocator = locator;
+
+    }
+
+    //=====================
+    // getScreenLocator()
+    //=====================
+    public ScreenLocator getScreenLocator() {
+
+        return this.screenLocator;
+    }
+
+
+
+
 
 
 
@@ -134,10 +163,12 @@ public class GameBoard {
 
         GameBoard board = new GameBoard(5);
         board.setTranslator(new TranslatorRFID());
+        board.setScreenLocator(new Display600x425());       //set the screen locator for the board. Gets pixel coordinates of any square
 
         GameSquare mySquare = board.getSquare(3);
         System.out.println("board.getSquare(3): ");
         mySquare.print();
+
 
 
 
@@ -172,6 +203,20 @@ public class GameBoard {
         GameSquare sqFromSerial = board.getSquareFromSerial("584604745789");
         System.out.println("board.getSquareFromSerial(584604745789): ");
         sqFromSerial.print();
+
+
+        //test screenLocator
+        int[] coords = board.screenLocator.getLocation(1);
+        System.out.println("board.screenLocator.getLocation(1): ");
+        System.out.println("x,y: " + coords[0] + "," + coords[1]);
+
+        coords = board.screenLocator.getLocation(10);
+        System.out.println("board.screenLocator.getLocation(10): ");
+        System.out.println("x,y: " + coords[0] + "," + coords[1]);
+
+        coords = board.screenLocator.getLocation(20);
+        System.out.println("board.screenLocator.getLocation(20): ");
+        System.out.println("x,y: " + coords[0] + "," + coords[1]);
 
 
 

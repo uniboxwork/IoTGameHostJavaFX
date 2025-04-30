@@ -50,7 +50,7 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
 
     public static void main(String[] args) {
 
-
+        /*
         MessageDispatcher dispatcher = new MessageDispatcher(); //create dispatcher
 
         //network control
@@ -58,8 +58,10 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
         controller.setInAdapter(new NetInWIFI());                      //the WIFI adapter
         controller.getIn().setDispatch(dispatcher);             //set the WIFI adapter dispatcher (place to send received messages)
 
-        GameLogic myGameLogic = new GameLogic();                //create logic
-        GameSystem myGameSystem = new GameSystem();             //create system
+        GameBoard board = new GameBoard(20);
+
+        GameSystem myGameSystem = new GameSystem();                         //create system
+        GameLogic myGameLogic = new GameLogic(myGameSystem, board);                //create logic
 
         dispatcher.addDestination("TAG", myGameLogic);
         dispatcher.addDestination("sys", myGameSystem);
@@ -76,6 +78,8 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
         //put messages through dispatcher
         //dispatcher.messageIn(myMessage1);
         //dispatcher.messageIn(myMessage2);
+
+         */
 
     }//end main()
 
