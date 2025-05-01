@@ -80,10 +80,11 @@ public class GameLogic implements IoTGameMessageReceiver {
 
     public void movePiece(IoTGameMessage message) {
 
-        gameServerGUI.updateInTextArea("GameLogic.movePiece(): ");
-        gameServerGUI.updateInTextArea("from: " + message.getFrom());
-        gameServerGUI.updateInTextArea("subj: " + message.getSubject());
-        gameServerGUI.updateInTextArea("cont: " + message.getContent());
+        //debug
+//        gameServerGUI.updateInTextArea("GameLogic.movePiece(): ");
+//        gameServerGUI.updateInTextArea("from: " + message.getFrom());
+//        gameServerGUI.updateInTextArea("subj: " + message.getSubject());
+//        gameServerGUI.updateInTextArea("cont: " + message.getContent());
 
 
 

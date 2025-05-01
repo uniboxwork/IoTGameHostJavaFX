@@ -1,5 +1,8 @@
 package com.example.iotgamehostjavafx;
 
+import javafx.application.Platform;
+import javafx.scene.control.TextField;
+
 import java.util.HashMap;
 
 
@@ -7,14 +10,32 @@ import java.util.HashMap;
 
 public class MessageDispatcher implements IoTGameMessageReceiver{
 
+    IoTGameServer_02 gameServerGUI; //link to gui for displaying received network messages
 
     //directory of destinations by subject for message dispatch
     //e.g. 'TAG' -> to GameLogic
     //e.g. 'sys' -> to GameSystem
     HashMap<String, IoTGameMessageReceiver> destinations = new HashMap<>();
 
+    //=============
+    // constructor
+    //=============
+    public MessageDispatcher(IoTGameServer_02 gameServerGUI) {
+        setGameServerGUI(gameServerGUI);
 
+    }
 
+    //===================
+    // setGameServerGUI
+    //===================
+    public void setGameServerGUI(IoTGameServer_02 gameServeGUI) {
+        this.gameServerGUI = gameServeGUI;
+
+    }
+
+    //==================
+    // addDestination()
+    //==================
     //adds routing destinations, filtering by message subject e.g. 'TAG' : GameLogic
     //                                                             'sys' : System
     public void addDestination(String subject, IoTGameMessageReceiver receiver) {
@@ -23,12 +44,41 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
 
     }
 
-
-
+    //===============
+    // messageIn()
+    //===============
     //Reads a game message subject and passes message on to matching destination object
     public void messageIn(IoTGameMessage message){
 
         //read subject
+
+        //--------------------------------------
+        //display message to gui in/out boxes
+        //--------------------------------------
+        //Safely gets elements in the JavaFX thread to change
+        Platform.runLater( () -> {
+
+            //inTextArea.setText(inTextArea.getText() + message + "\n");  //add to out textarea
+            //inTextArea.setScrollTop(Double.MAX_VALUE);  //keep scrolled to bottom of list
+            gameServerGUI.updateInTextArea("Dispatcher: ");
+            gameServerGUI.updateInTextArea("------------");
+            gameServerGUI.updateInTextArea("raw: " + message.getRaw());
+            gameServerGUI.updateInTextArea("from: " + message.getFrom());
+            gameServerGUI.updateInTextArea("subj: " + message.getSubject());
+            gameServerGUI.updateInTextArea("cont: " + message.getContent());
+
+            gameServerGUI.updateFields(message);
+
+
+        });
+
+
+
+
+
+
+
+
 
         //subject entry filter exists?...
         if(this.destinations.containsKey(message.getSubject())) {
@@ -46,6 +96,7 @@ public class MessageDispatcher implements IoTGameMessageReceiver{
 
 
     }//end messageIn()
+
 
 
     public static void main(String[] args) {

@@ -140,12 +140,6 @@ public class IoTGameServer extends Application {
         }
 
 
-        //Path myPath = new Path();
-        //myPath.getElements().add(new MoveTo(antiviro_x,antiviro_y));
-        //myPath.getElements().add(new LineTo(antiviro_x -= 50,antiviro_y -= 50));
-
-
-
 
 
 

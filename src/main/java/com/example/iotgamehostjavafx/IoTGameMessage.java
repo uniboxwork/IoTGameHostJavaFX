@@ -5,29 +5,41 @@ public class IoTGameMessage {
 
     private String fieldSeparator = "#";    //character to split network message strings by
 
+    private String raw;
     private String from;
     private String subject;
     private String content;
 
-    //--------------------------
-    //default blank constructor
-    //--------------------------
+    //-----------------------------
+    //constructor - blank default
+    //-----------------------------
     //no input, do nothing
     public IoTGameMessage() {
 
     }
 
-    //---------------------------
-    //message string constructor
-    //---------------------------
+    //-----------------------------------
+    //constructor - from message string
+    //-----------------------------------
     //message from string - decode...
     public IoTGameMessage(String messageString) {
 
+            this.raw = messageString;  //raw message
+
+            //separate into fields...
             String[] messageFields = messageString.split("#");
             this.from = messageFields[0];
             this.subject = messageFields[1];
             this.content = messageFields[2];
 
+    }
+
+    public void setRaw(String raw) {
+        this.raw = raw;
+    }
+
+    public String getRaw() {
+        return this.raw;
     }
 
     public void setFrom (String from) {

@@ -61,6 +61,11 @@ import java.util.HashMap;
         TextArea inTextArea;
         TextArea outTextArea;
 
+        //message in display fields
+        TextField display_pieceIDIn;
+        TextField display_subjectIn;
+        TextField display_valueIn;
+
 
 
 
@@ -138,7 +143,7 @@ import java.util.HashMap;
 
 
 
-            dispatcher = new MessageDispatcher(); //create dispatcher
+            dispatcher = new MessageDispatcher(this); //create dispatcher and pass in this GUI so messges can be displayed
 
             //network control
             controller = new NetInController();
@@ -233,9 +238,7 @@ import java.util.HashMap;
             }
 
 
-            //Path myPath = new Path();
-            //myPath.getElements().add(new MoveTo(antiviro_x,antiviro_y));
-            //myPath.getElements().add(new LineTo(antiviro_x -= 50,antiviro_y -= 50));
+
 
 
 
@@ -376,9 +379,9 @@ import java.util.HashMap;
             //Label label_timeRemainingIn = new Label("Time remaining: ");
 
             //text fields
-            TextField display_pieceIDIn = new TextField("...");
-            TextField display_subjectIn = new TextField("...");
-            TextField display_valueIn = new TextField("...");
+            display_pieceIDIn = new TextField("...");
+            display_subjectIn = new TextField("...");
+            display_valueIn = new TextField("...");
             //TextField display_pieceLocationIn = new TextField("...");
             //TextField display_timeRemainingIn = new TextField("...");
 
@@ -1100,6 +1103,13 @@ import java.util.HashMap;
 
         }
 
+        public void updateFields(IoTGameMessage message) {
+
+            display_pieceIDIn.setText(message.getFrom());
+            display_subjectIn.setText(message.getSubject());
+            display_valueIn.setText(message.getContent());
+
+        }
 
 
 
